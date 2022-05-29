@@ -24,16 +24,14 @@ public class Engine {
 //        }
 
         hero = new Hero();
+        hero.setPosition(new Position(1,1));
         map = new Map();
-        Enemy badGuy = new BadGuy(new Position(8, 8));
-        Enemy bat = new Bat(new Position(5, 2));
 
         map.generateMap(hero);
         mapTiles = map.getMapTiles();
 
         mapTiles.add(hero);
-        mapTiles.add(badGuy);
-        mapTiles.add(bat);
+
         gui.setEngine(this);
 
         gui.newImages(mapTiles);
@@ -50,6 +48,9 @@ public class Engine {
 
     public void notify(int keyPressed){
         hero.move(keyPressed, map);
+        for (Enemy enemy : map.getEnemyList()){
+            enemy.move(map);
+        }
     }
 
     public static void main(String[] args){

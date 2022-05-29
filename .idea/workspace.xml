@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f409e310-38d4-47a1-8bba-48a3a2b42e6f" name="Default Changelist" comment="" />
+    <list default="true" id="f409e310-38d4-47a1-8bba-48a3a2b42e6f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Key.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Meat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Skeleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/DoorClosed.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/DoorOpen.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Enemy.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Enemy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Entity.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Entity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Hero.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Hero.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Item.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/objects/Item.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/rogue/utils/Map.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Rogue_UPskill2022_v1_Nome_Completo/pt/upskill/projeto1/rogue/utils/Map.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rooms/room2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/rooms/room2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/game/Engine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/game/Engine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/DoorClosed.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Door.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/DoorOpen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Enemy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Enemy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Entity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Hero.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Hero.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pt/upskill/projeto1/rogue/utils/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/pt/upskill/projeto1/rogue/utils/Map.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,16 +40,23 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="1jTu9goc6jnCfNu5DXWtIY76VLx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Joana/IdeaProjects/Rogue_UPskill2022_v1_Joana_Ferro&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
@@ -143,5 +172,41 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/pt/upskill/projeto1/rogue/utils/Map.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/pt/upskill/projeto1/game/Engine.java</url>
+          <line>50</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/pt/upskill/projeto1/objects/Enemy.java</url>
+          <line>24</line>
+          <properties class="pt.upskill.projeto1.objects.Enemy" method="move">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

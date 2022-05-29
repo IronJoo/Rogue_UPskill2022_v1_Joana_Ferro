@@ -2,7 +2,7 @@ package pt.upskill.projeto1.objects;
 
 import pt.upskill.projeto1.rogue.utils.Position;
 
-public class Entity {
+public abstract class Entity {
     private Position position;
     private int health = 100;
     private int damage;
@@ -54,4 +54,5 @@ public class Entity {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+    public abstract String getName();
 }
