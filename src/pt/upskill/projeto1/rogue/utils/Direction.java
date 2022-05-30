@@ -7,7 +7,7 @@ package pt.upskill.projeto1.rogue.utils;
  *
  */
 public enum Direction {
-	LEFT, UP, RIGHT, DOWN;
+	LEFT, UP, RIGHT, DOWN, UPLEFT, UPRIGHT, DOWNRIGHT, DOWNLEFT;
 
 	public Vector2D asVector() {
 		if(this==Direction.UP){
@@ -21,6 +21,19 @@ public enum Direction {
 		}
 		if(this==Direction.RIGHT){
 			return new Vector2D(1, 0);
+		}
+		//DIAGONAIS
+		if(this==Direction.UPLEFT){
+			return new Vector2D(-1, -1);
+		}
+		if(this==Direction.UPRIGHT){
+			return new Vector2D(1, -1);
+		}
+		if(this==Direction.DOWNRIGHT){
+			return new Vector2D(1, 1);
+		}
+		if(this==Direction.DOWNLEFT){
+			return new Vector2D(-1, 1);
 		}
 		return null;
 	}

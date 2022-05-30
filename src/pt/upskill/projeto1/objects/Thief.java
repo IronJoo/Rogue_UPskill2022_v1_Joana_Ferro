@@ -32,18 +32,26 @@ public class Thief extends Enemy implements ImageTile {
     public void move(Map map){
         int num = new Random().nextInt(4);
         switch (num){
+            case 0:
+                if (!map.isWall(super.getPosition().plus(Direction.UPLEFT.asVector())))
+                    super.setPosition(super.getPosition().plus(Direction.UPLEFT.asVector()));
+                System.out.println("UPLEFT");
+                break;
             case 1:
-                if (!map.isWall(super.getPosition().plus(Direction.DOWN.asVector())))
-                    super.setPosition(super.getPosition().plus(Direction.DOWN.asVector()));
+                if (!map.isWall(super.getPosition().plus(Direction.UPRIGHT.asVector())))
+                    super.setPosition(super.getPosition().plus(Direction.UPRIGHT.asVector()));
+                System.out.println("UPRIGHT");
+                break;
             case 2:
-                if (!map.isWall(super.getPosition().plus(Direction.UP.asVector())))
-                    super.setPosition(super.getPosition().plus(Direction.UP.asVector()));
+                if (!map.isWall(super.getPosition().plus(Direction.DOWNLEFT.asVector())))
+                    super.setPosition(super.getPosition().plus(Direction.DOWNLEFT.asVector()));
+                System.out.println("DOWNLEFT");
+                break;
             case 3:
-                if (!map.isWall(super.getPosition().plus(Direction.LEFT.asVector())))
-                    super.setPosition(super.getPosition().plus(Direction.LEFT.asVector()));
-            case 4:
-                if (!map.isWall(super.getPosition().plus(Direction.RIGHT.asVector())))
-                    super.setPosition(super.getPosition().plus(Direction.RIGHT.asVector()));
+                if (!map.isWall(super.getPosition().plus(Direction.DOWNRIGHT.asVector())))
+                    super.setPosition(super.getPosition().plus(Direction.DOWNRIGHT.asVector()));
+                System.out.println("DOWNRIGHT");
+                break;
 
         }
     }

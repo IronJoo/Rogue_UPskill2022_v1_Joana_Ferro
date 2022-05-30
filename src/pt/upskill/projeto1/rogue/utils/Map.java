@@ -73,7 +73,14 @@ public class Map {
                             enemyList.add(skeleton);
                             break;
                         case 'G':
-                            mapTiles.add(new BadGuy(new Position(x, y)));
+                            BadGuy badguy = new BadGuy(new Position(x, y));
+                            mapTiles.add(badguy);
+                            enemyList.add(badguy);
+                            break;
+                        case 'T':
+                            Thief thief = new Thief(new Position(x, y));
+                            mapTiles.add(thief);
+                            enemyList.add(thief);
                             break;
                         case 'm':
                             mapTiles.add(new Meat(new Position(x, y)));

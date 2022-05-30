@@ -24,20 +24,32 @@ public abstract class Enemy extends Entity implements ImageTile {
     }
     public void move(Map map){
         int num = new Random().nextInt(4);
+        //System.out.print(num + " = ");
         switch (num){
-            case 1:
-                if (!map.isWall(super.getPosition().plus(Direction.DOWN.asVector())))
-                    super.setPosition(super.getPosition().plus(Direction.DOWN.asVector()));
-            case 2:
-                if (!map.isWall(super.getPosition().plus(Direction.UP.asVector())))
+            case 0:
+                if (!map.isWall(super.getPosition().plus(Direction.UP.asVector()))) {
                     super.setPosition(super.getPosition().plus(Direction.UP.asVector()));
-            case 3:
-                if (!map.isWall(super.getPosition().plus(Direction.LEFT.asVector())))
-                    super.setPosition(super.getPosition().plus(Direction.LEFT.asVector()));
-            case 4:
-                if (!map.isWall(super.getPosition().plus(Direction.RIGHT.asVector())))
+//                    System.out.println("UP"); //apagar
+                }
+                break;
+            case 1:
+                if (!map.isWall(super.getPosition().plus(Direction.RIGHT.asVector()))) {
                     super.setPosition(super.getPosition().plus(Direction.RIGHT.asVector()));
-
+                }
+//                System.out.println("RIGHT");
+                break;
+            case 2:
+                if (!map.isWall(super.getPosition().plus(Direction.DOWN.asVector()))) {
+                    super.setPosition(super.getPosition().plus(Direction.DOWN.asVector()));
+                }
+//                System.out.println("DOWN");
+                break;
+            case 3:
+                if (!map.isWall(super.getPosition().plus(Direction.LEFT.asVector()))) {
+                    super.setPosition(super.getPosition().plus(Direction.LEFT.asVector()));
+                }
+//                System.out.println("LEFT");
+                break;
         }
     }
 
