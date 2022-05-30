@@ -6,6 +6,7 @@ public abstract class Item {
     private Position position;
     private int damage;
 
+    public Item(){}
     public Item(Position position) {
         this.position = position;
     }

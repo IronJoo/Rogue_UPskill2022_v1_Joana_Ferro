@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
     private ArrayList<Item> inventory = new ArrayList<Item>();
+    private Weapon weapon = null;
 
     public Hero(Position position) {
 
@@ -22,6 +23,7 @@ public class Hero extends Entity implements ImageTile {
         super(100,10);
         //currentRoom = "./rooms/room0.txt";
     }
+
 
     @Override
     public String getName() {
@@ -36,7 +38,7 @@ public class Hero extends Entity implements ImageTile {
 //    }
 
     public void move(int keyPressed, Map map) {
-        switch(keyPressed){
+        switch (keyPressed) {
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_UP:
             case KeyEvent.VK_LEFT:
@@ -47,9 +49,50 @@ public class Hero extends Entity implements ImageTile {
         }
         Direction direction = toDirection(keyPressed);
         Position nextPosition = super.getPosition().plus(direction.asVector());
-            if (!map.findsCollision(nextPosition)) {
-                super.setPosition(nextPosition);
+        if (!map.findsCollision(nextPosition)) {
+            super.setPosition(nextPosition);
+        }
+        if (map.isClosedDoor(nextPosition)) {
+            for (ImageTile tile : map.getMapTiles()) {
+                if (tile.getPosition().equals(nextPosition) && tile instanceof Door) {
+                    //if ()
+                    ((Door) tile).setType("D");
+                    ((Door) tile).setOpen(true);
+                }
             }
+        }
+        if (map.isEnemy(nextPosition)) {
+            for (ImageTile tile : map.getMapTiles()) {
+                if (tile.getPosition().equals(nextPosition) && tile instanceof Enemy) {
+                    int totalDamage = getDamage();
+                    if (hasWeapon()){
+                        totalDamage += weapon.getDamage();
+                    }
+                    ((Enemy) tile).receiveDamage(totalDamage);
+                    System.out.println(((Enemy) tile).getHealth());
+                }
+            }
+        }
+        if (map.isOpenDoor(nextPosition)) {
+
+        }
+        if (map.isItem(nextPosition)) {
+            for (ImageTile tile : map.getMapTiles()) {
+                if (tile.getPosition().equals(nextPosition) && tile instanceof Meat) {
+                    super.addHealth(new Meat().getHealthValue()); //bad practice! fix later: get value of actual piece of meat and not from a new instance
+                    ((Item) tile).setPosition(new Position(9, -1)); //set to out of view
+                } else if (tile.getPosition().equals(nextPosition) && tile instanceof Weapon) {
+                    weapon = (Weapon)tile;
+                    ((Item) tile).setPosition(new Position(9, -1));
+                } else if (tile.getPosition().equals(nextPosition) && tile instanceof Item) {
+                    inventory.add((Item) tile);
+                    ((Item) tile).setPosition(new Position(9, -1));
+                }
+            }
+        }
+    }
+    private boolean hasWeapon() {
+        return weapon != null;
     }
     private Direction toDirection(int keyPressed){
 

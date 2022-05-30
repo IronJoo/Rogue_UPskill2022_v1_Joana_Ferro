@@ -34,6 +34,7 @@ public class Engine {
 
         gui.setEngine(this);
 
+        //gui.addStatusImage();
         gui.newImages(mapTiles);
         gui.go();
 

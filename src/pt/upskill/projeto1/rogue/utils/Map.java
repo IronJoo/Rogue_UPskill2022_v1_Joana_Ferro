@@ -14,7 +14,8 @@ public class Map {
     private ArrayList<Enemy> enemyList = new ArrayList<Enemy>();
     private ArrayList<Item> itemList = new ArrayList<Item>();
     private ArrayList<Door> doorList = new ArrayList<Door>();
-    private String currentRoom = "./rooms/room2.txt";
+    private ArrayList<Key> keyList = new ArrayList<Key>();
+    private String currentRoom = "./rooms/room0.txt";
 
     public Map(ArrayList<ImageTile> tiles) {
         this.mapTiles = tiles;
@@ -54,6 +55,7 @@ public class Map {
                             doorList.add(new Door(tokens[1],tokens[2],tokens[3],tokens[4]));
                             break;
                         case 3:
+                            keyList.add(new Key(tokens[2]));
                             break;
                     }
                     continue;
@@ -63,9 +65,6 @@ public class Map {
                     switch (character) {
                         case 'W':
                             mapTiles.add(new Wall(new Position(x, y)));
-                            break;
-                        case 'H':
-                            hero.setPosition(new Position(x, y));
                             break;
                         case 'S':
                             Skeleton skeleton = new Skeleton(new Position(x, y));
@@ -85,6 +84,14 @@ public class Map {
                         case 'm':
                             mapTiles.add(new Meat(new Position(x, y)));
                             break;
+                        case 'k':
+                            Key key = keyList.get(0);
+                            key.setPosition(new Position(x, y));
+                            mapTiles.add(key);
+                            break;
+                        case 's':
+                            mapTiles.add(new Sword(new Position(x, y)));
+                            break;
                         default:
                             if (Character.isDigit(character)){
                                 int i = character-'0';
@@ -101,12 +108,6 @@ public class Map {
             throw new RuntimeException(e);
         }
     }
-//    public void createDoor(char character){
-//        if (character == '0') {
-//
-//        }
-//
-//    }
     public boolean findsCollision(Position position){
         if (isWall(position) || isEnemy(position) || isClosedDoor(position) || isHero(position))
             return true;
@@ -138,6 +139,22 @@ public class Map {
         int i = 0;
         for (ImageTile tile : mapTiles) {
             if (tile.getPosition().equals(position) && tile.getName().equals("DoorClosed"))
+                return true;
+        }
+        return false;
+    }
+    public boolean isOpenDoor(Position position) {
+        int i = 0;
+        for (ImageTile tile : mapTiles) {
+            if (tile.getPosition().equals(position) && (tile.getName().equals("DoorWay") || tile.getName().equals("DoorOpen")))
+                return true;
+        }
+        return false;
+    }
+    public boolean isItem(Position position) {
+        int i = 0;
+        for (ImageTile tile : mapTiles) {
+            if (tile.getPosition().equals(position) && tile instanceof Item)
                 return true;
         }
         return false;

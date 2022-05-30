@@ -54,6 +54,18 @@ public abstract class Entity {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+    public void addHealth(int amount){
+        if (health + amount >= 100)
+            setHealth(100);
+        else
+            health = health + amount;
+    }
+    public void receiveDamage(int amount){
+        if (health - amount <= 0)
+            setHealth(0);
+        else
+            setHealth(health - amount);
+    }
 
     public abstract String getName();
 }

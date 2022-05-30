@@ -32,6 +32,7 @@ public abstract class Enemy extends Entity implements ImageTile {
         if (!map.findsCollision(nextPosition)) {
             super.setPosition(nextPosition);
         }
+        //hero.receiveDamage(getDamage()); //get enemy to see hero, but how????
     }
     private Direction toDirection(int num){ //converts random int into one of the four directions
 
@@ -44,6 +45,17 @@ public abstract class Enemy extends Entity implements ImageTile {
                 return Direction.RIGHT;
             default:
                 return Direction.UP;
+        }
+    }
+    @Override
+    public void receiveDamage(int amount){
+        if (super.getHealth() - amount <= 0)
+            super.setHealth(0);
+        else
+            super.setHealth(super.getHealth() - amount);
+        if (super.getHealth() == 0){
+            super.setPosition(new Position(-1, -1));
+
         }
     }
 }

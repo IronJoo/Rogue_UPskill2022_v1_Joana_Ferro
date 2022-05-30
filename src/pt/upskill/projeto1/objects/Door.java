@@ -9,7 +9,7 @@ public class Door implements ImageTile {
     private String type;
     private String leadsToRoom;
     private String leadsToDoor;
-    private String key;
+    private String requiredKey;
     private boolean isOpen = false;
 
     public Door(Position position) {
@@ -21,14 +21,22 @@ public class Door implements ImageTile {
         this.leadsToDoor = leadsToDoor;
         this.leadsToRoom = leadsToRoom;
     }
-    public Door(String number, String type, String leadsToRoom, String leadsToDoor, String key){
+    public Door(String number, String type, String leadsToRoom, String leadsToDoor, String requiredKey){
         this(number, type, leadsToRoom, leadsToDoor);
-        this.key = key;
+        this.requiredKey = requiredKey;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
     }
 
     @Override
     public String getName() {
-        if (type == "E"){
+        if (type.equals("E")){
             return "DoorWay";
         } else {
             if (isOpen) {
@@ -46,4 +54,5 @@ public class Door implements ImageTile {
     public void setPosition(Position position) {
         this.position = position;
     }
+
 }
