@@ -107,6 +107,11 @@ public class Map {
 //        }
 //
 //    }
+    public boolean findsCollision(Position position){
+        if (isWall(position) || isEnemy(position) || isClosedDoor(position) || isHero(position))
+            return true;
+        return false;
+    }
 
     public boolean isWall(Position position) {
         for (ImageTile tile : mapTiles) {
@@ -118,6 +123,21 @@ public class Map {
     public boolean isEnemy(Position position) {
         for (ImageTile tile : mapTiles) {
             if (tile.getPosition().equals(position) && tile instanceof Enemy)
+                return true;
+        }
+        return false;
+    }
+    public boolean isHero(Position position) {
+        for (ImageTile tile : mapTiles) {
+            if (tile.getPosition().equals(position) && tile instanceof Hero)
+                return true;
+        }
+        return false;
+    }
+    public boolean isClosedDoor(Position position) {
+        int i = 0;
+        for (ImageTile tile : mapTiles) {
+            if (tile.getPosition().equals(position) && tile.getName().equals("DoorClosed"))
                 return true;
         }
         return false;

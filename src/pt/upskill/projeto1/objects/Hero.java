@@ -6,10 +6,12 @@ import pt.upskill.projeto1.rogue.utils.Map;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
+    private ArrayList<Item> inventory = new ArrayList<Item>();
 
     public Hero(Position position) {
 
@@ -44,8 +46,9 @@ public class Hero extends Entity implements ImageTile {
                 return;
         }
         Direction direction = toDirection(keyPressed);
-            if (!map.isWall(super.getPosition().plus(direction.asVector()))) {
-                super.setPosition(super.getPosition().plus(direction.asVector()));
+        Position nextPosition = super.getPosition().plus(direction.asVector());
+            if (!map.findsCollision(nextPosition)) {
+                super.setPosition(nextPosition);
             }
     }
     private Direction toDirection(int keyPressed){

@@ -54,5 +54,6 @@ public abstract class Entity {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+
     public abstract String getName();
 }
