@@ -4,6 +4,7 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.*;
 import pt.upskill.projeto1.rogue.utils.Map;
+import pt.upskill.projeto1.rogue.utils.Room;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 public class Engine {
     private Hero hero;
     private Map map;
+    private Room room;
     private ArrayList<ImageTile> mapTiles;
 
     public void init(){
@@ -24,18 +26,19 @@ public class Engine {
 //        }
 
         hero = new Hero();
-        hero.setPosition(new Position(1,1));
+        hero.setPosition(new Position(6,8));
         map = new Map();
-
-        map.generateMap(hero);
-        mapTiles = map.getMapTiles();
+        room = map.getRoom(hero);
+        //room.generateNewRoom();
+        mapTiles = room.getMapTiles();
 
         mapTiles.add(hero);
-
+        //gui.setStatus();
         gui.setEngine(this);
 
         //gui.addStatusImage();
         gui.newImages(mapTiles);
+        //gui.newStatusImages();
         gui.go();
 
         gui.setStatus("O jogo começou!");
@@ -48,9 +51,9 @@ public class Engine {
     }
 
     public void notify(int keyPressed){
-        hero.move(keyPressed, map);
-        for (Enemy enemy : map.getEnemyList()){
-            enemy.move(map);
+        hero.move(keyPressed, room);
+        for (Enemy enemy : room.getEnemyList()){
+            enemy.move(room, hero);
         }
     }
 

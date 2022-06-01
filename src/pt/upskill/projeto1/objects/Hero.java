@@ -2,17 +2,18 @@ package pt.upskill.projeto1.objects;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Direction;
-import pt.upskill.projeto1.rogue.utils.Map;
+import pt.upskill.projeto1.rogue.utils.Room;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
     private ArrayList<Item> inventory = new ArrayList<Item>();
     private Weapon weapon = null;
+    private int currentRoom = 3;
 
     public Hero(Position position) {
 
@@ -24,6 +25,9 @@ public class Hero extends Entity implements ImageTile {
         //currentRoom = "./rooms/room0.txt";
     }
 
+    public int getCurrentRoom() {
+        return currentRoom;
+    }
 
     @Override
     public String getName() {
@@ -37,7 +41,7 @@ public class Hero extends Entity implements ImageTile {
 //        this.currentRoom = currentRoom;
 //    }
 
-    public void move(int keyPressed, Map map) {
+    public void move(int keyPressed, Room room) {
         switch (keyPressed) {
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_UP:
@@ -49,44 +53,49 @@ public class Hero extends Entity implements ImageTile {
         }
         Direction direction = toDirection(keyPressed);
         Position nextPosition = super.getPosition().plus(direction.asVector());
-        if (!map.findsCollision(nextPosition)) {
+        if (!room.findsCollision(nextPosition)) {
             super.setPosition(nextPosition);
         }
-        if (map.isClosedDoor(nextPosition)) {
-            for (ImageTile tile : map.getMapTiles()) {
+        if (room.isClosedDoor(nextPosition)) {
+            for (ImageTile tile : room.getMapTiles()) {
                 if (tile.getPosition().equals(nextPosition) && tile instanceof Door) {
-                    //if ()
+                    //if (hero has key and it matches door key)
                     ((Door) tile).setType("D");
-                    ((Door) tile).setOpen(true);
+                    ((Door) tile).setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
                 }
             }
         }
-        if (map.isEnemy(nextPosition)) {
-            for (ImageTile tile : map.getMapTiles()) {
+        if (room.isEnemy(nextPosition)) { //attack
+            for (ImageTile tile : room.getMapTiles()) {
                 if (tile.getPosition().equals(nextPosition) && tile instanceof Enemy) {
                     int totalDamage = getDamage();
-                    if (hasWeapon()){
+                    if (hasWeapon()) {
                         totalDamage += weapon.getDamage();
                     }
                     ((Enemy) tile).receiveDamage(totalDamage);
-                    System.out.println(((Enemy) tile).getHealth());
+                    System.out.println("Enemy health = " + ((Enemy) tile).getHealth());
                 }
             }
         }
-        if (map.isOpenDoor(nextPosition)) {
+        if (room.isOpenDoor(getPosition())) {
+            for (ImageTile tile : room.getMapTiles()) {
+                if (tile.getPosition().equals(getPosition()) && (tile.getName().equals("DoorOpen") || tile.getName().equals("DoorWay"))) {
 
+                }
+            }
         }
-        if (map.isItem(nextPosition)) {
-            for (ImageTile tile : map.getMapTiles()) {
-                if (tile.getPosition().equals(nextPosition) && tile instanceof Meat) {
+        if (room.isItem(nextPosition)) {
+            for (Item item : room.getItemList()) {
+                if (item.getPosition().equals(nextPosition) && item instanceof Meat) {
                     super.addHealth(new Meat().getHealthValue()); //bad practice! fix later: get value of actual piece of meat and not from a new instance
-                    ((Item) tile).setPosition(new Position(9, -1)); //set to out of view
-                } else if (tile.getPosition().equals(nextPosition) && tile instanceof Weapon) {
-                    weapon = (Weapon)tile;
-                    ((Item) tile).setPosition(new Position(9, -1));
-                } else if (tile.getPosition().equals(nextPosition) && tile instanceof Item) {
-                    inventory.add((Item) tile);
-                    ((Item) tile).setPosition(new Position(9, -1));
+                    ((Item) item).setPosition(new Position(9, -1)); //set to out of view
+                } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
+                    weapon = (Weapon) item;
+                    ((Item) item).setPosition(new Position(9, -1));
+                } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
+                    inventory.add((Item) item);
+                    ((Item) item).setPosition(new Position(9, -1));
+                    System.out.println("Item picked up");
                 }
             }
         }
