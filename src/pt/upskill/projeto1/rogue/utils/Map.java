@@ -2,8 +2,8 @@ package pt.upskill.projeto1.rogue.utils;
 
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.Door;
-import pt.upskill.projeto1.objects.Hero;
+import pt.upskill.projeto1.objects.RoomElements.Door;
+import pt.upskill.projeto1.objects.Entities.Hero;
 
 import java.util.ArrayList;
 import java.util.HashMap;

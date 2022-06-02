@@ -2,7 +2,9 @@ package pt.upskill.projeto1.game;
 
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.*;
+import pt.upskill.projeto1.objects.Entities.Enemy;
+import pt.upskill.projeto1.objects.Entities.Hero;
+import pt.upskill.projeto1.objects.TileColors.Black;
 import pt.upskill.projeto1.rogue.utils.Map;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -31,9 +33,9 @@ public class Engine {
 
         ArrayList<ImageTile> statusBar = new ArrayList<>();
         for (int i = 0; i < 10; i++){
+            statusBar.add(new Black(new Position(i, 0)));
 
         }
-        statusBar.add(new Floor(new Position(0,0)));
         gui.newStatusImages(statusBar);
 
         while (true){

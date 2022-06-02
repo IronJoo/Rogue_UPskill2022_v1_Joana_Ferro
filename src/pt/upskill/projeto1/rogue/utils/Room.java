@@ -1,7 +1,13 @@
 package pt.upskill.projeto1.rogue.utils;
 
 import pt.upskill.projeto1.gui.ImageTile;
-import pt.upskill.projeto1.objects.*;
+import pt.upskill.projeto1.objects.Entities.*;
+import pt.upskill.projeto1.objects.Items.*;
+import pt.upskill.projeto1.objects.Items.Weapons.Hammer;
+import pt.upskill.projeto1.objects.Items.Weapons.Sword;
+import pt.upskill.projeto1.objects.RoomElements.Door;
+import pt.upskill.projeto1.objects.RoomElements.Floor;
+import pt.upskill.projeto1.objects.RoomElements.Wall;
 
 import java.io.File;
 import java.io.FileNotFoundException;
