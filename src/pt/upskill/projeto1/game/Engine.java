@@ -29,6 +29,12 @@ public class Engine {
 
         gui.setStatus("O jogo começou!");
 
+        ArrayList<ImageTile> statusBar = new ArrayList<>();
+        for (int i = 0; i < 10; i++){
+
+        }
+        statusBar.add(new Floor(new Position(0,0)));
+        gui.newStatusImages(statusBar);
 
         while (true){
             gui.update();
@@ -41,6 +47,9 @@ public class Engine {
         for (Enemy enemy : map.getCurrentRoom().getEnemyList()){
             enemy.move(map.getCurrentRoom(), hero);
         }
+//        if (hero.isDead()){
+//            init();
+//        }
     }
 
     public static void main(String[] args){

@@ -60,12 +60,8 @@ public abstract class Entity {
         else
             health = health + amount;
     }
-    public void receiveDamage(int amount){
-        if (health - amount <= 0)
-            setHealth(0);
-        else
-            setHealth(health - amount);
-    }
+    public abstract void receiveDamage(int amount);
+    public abstract void dies();
 
     public abstract String getName();
 }

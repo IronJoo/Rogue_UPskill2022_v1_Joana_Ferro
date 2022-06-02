@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects;
 
+import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Map;
@@ -15,6 +16,7 @@ public class Hero extends Entity implements ImageTile {
     private ArrayList<Item> inventory = new ArrayList<Item>();
     private Weapon weapon = null;
     private int currentRoom = 0;
+    private boolean isDead = false;
 
     public Hero(Position position) {
 
@@ -98,21 +100,33 @@ public class Hero extends Entity implements ImageTile {
             for (Item item : room.getItemList()) {
                 if (item.getPosition().equals(nextPosition) && item instanceof Meat) {
                     super.addHealth(new Meat().getHealthValue()); //bad practice! fix later: get value of actual piece of meat and not from a new instance
-                    ((Item) item).setPosition(new Position(9, -1)); //set to out of view
+                    moveItemToOutOfView(item);
                 } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
+                    switchWeapon((Weapon)item, map);
                     weapon = (Weapon) item;
-                    ((Item) item).setPosition(new Position(9, -1));
-                    System.out.println("Item picked up");
+                    moveItemToOutOfView(item);
                 } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
                     inventory.add((Item) item);
-                    ((Item) item).setPosition(new Position(9, -1));
-                    System.out.println("Item picked up");
+                    moveItemToOutOfView(item);
                 }
             }
         }
     }
+    private void switchWeapon(Weapon newWeapon, Map map){
+//        if (hasWeapon()) {  //to do: hero drops old weapon on the floor and picks up new one
+//            Weapon droppedWeapon = weapon;
+//            droppedWeapon.setPosition(getPosition());
+//            map.getCurrentRoom().getMapTiles().add(droppedWeapon);
+//            itemList.add(droppedWeapon);
+//        }
+        weapon = newWeapon;
+    }
+
     private boolean hasWeapon() {
         return weapon != null;
+    }
+    private void moveItemToOutOfView(Item item){
+        item.setPosition(new Position(9, -1));
     }
     private Direction toDirection(int keyPressed){
 
@@ -126,6 +140,30 @@ public class Hero extends Entity implements ImageTile {
             default:
                 return Direction.UP;
         }
+    }
+    public void receiveDamage(int amount){
+        if (super.getHealth() - amount <= 0) {
+            super.setHealth(0); //to do: add to gui
+            //this.dies();
+            setDead(true);
+        }
+        else
+            super.setHealth(super.getHealth() - amount);
+    }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public void dies(){ //to do: FIX!!! NOT WORKING
+        //ImageMatrixGUI newGui = ImageMatrixGUI.getInstance();
+        //Map newMapAfterDeath = new Map(newGui);
+        //newGui.setEngine(??);
+        //newMapAfterDeath.runRoomEngine(0, new Hero());
+        // -------
     }
 }

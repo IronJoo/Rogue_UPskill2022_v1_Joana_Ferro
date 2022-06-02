@@ -52,7 +52,7 @@ public abstract class Enemy extends Entity implements ImageTile {
     }
     private void moveToDirectionOf(Entity entity, Room room){
         int xDifference = calculateXDifference(getPosition(), entity.getPosition());
-        int yDifference = getPosition().getY() - entity.getPosition().getY();
+        int yDifference = calculateYDifference(getPosition(), entity.getPosition());
 
         int randomCoordinate = new Random().nextInt(2); //enemy will use either y or x coodinate to get closer to hero
         switch (randomCoordinate){
@@ -108,14 +108,16 @@ public abstract class Enemy extends Entity implements ImageTile {
     }
     @Override
     public void receiveDamage(int amount){
-        if (super.getHealth() - amount <= 0)
+        if (super.getHealth() - amount <= 0) {
             super.setHealth(0);
+            this.dies();
+        }
         else
             super.setHealth(super.getHealth() - amount);
-        if (super.getHealth() == 0){
-            super.setPosition(new Position(-1, -1)); //when enemy dies, it is moved to out of view
-
-        }
+    }
+    @Override
+    public void dies() { //when enemy dies, it is moved to out of view
+        super.setPosition(new Position(-1, -1));
     }
 }
 

@@ -126,6 +126,11 @@ public class Room {
                             mapTiles.add(sword);
                             itemList.add(sword);
                             break;
+                        case 'H': //hammer
+                            Hammer hammer = new Hammer(new Position(x, y));
+                            mapTiles.add(hammer);
+                            itemList.add(hammer);
+                            break;
                         default: //door
                             if (Character.isDigit(character)){
                                 int i = character-'0';
