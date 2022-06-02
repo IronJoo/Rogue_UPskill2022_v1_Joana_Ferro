@@ -2,6 +2,7 @@ package pt.upskill.projeto1.objects;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Direction;
+import pt.upskill.projeto1.rogue.utils.Map;
 import pt.upskill.projeto1.rogue.utils.Room;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -13,11 +14,11 @@ public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
     private ArrayList<Item> inventory = new ArrayList<Item>();
     private Weapon weapon = null;
-    private int currentRoom = 3;
+    private int currentRoom = 0;
 
     public Hero(Position position) {
 
-        super(position);
+        super(position); //to do: set health and damage values
         //this.currentRoom = currentRoom;
     }
     public Hero(){
@@ -27,6 +28,10 @@ public class Hero extends Entity implements ImageTile {
 
     public int getCurrentRoom() {
         return currentRoom;
+    }
+
+    public void setCurrentRoom(int currentRoom) {
+        this.currentRoom = currentRoom;
     }
 
     @Override
@@ -41,12 +46,14 @@ public class Hero extends Entity implements ImageTile {
 //        this.currentRoom = currentRoom;
 //    }
 
-    public void move(int keyPressed, Room room) {
+    public void move(int keyPressed, Map map) {
+        Room room = map.getCurrentRoom();
         switch (keyPressed) {
             case KeyEvent.VK_DOWN:
             case KeyEvent.VK_UP:
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_ENTER:
                 break;
             default:
                 return;
@@ -78,8 +85,11 @@ public class Hero extends Entity implements ImageTile {
             }
         }
         if (room.isOpenDoor(getPosition())) {
-            for (ImageTile tile : room.getMapTiles()) {
-                if (tile.getPosition().equals(getPosition()) && (tile.getName().equals("DoorOpen") || tile.getName().equals("DoorWay"))) {
+            for (Door door : room.getDoorList()) {
+                if (door.getPosition().equals(getPosition()) && (door.getName().equals("DoorOpen") || door.getName().equals("DoorWay"))) {
+                    setCurrentRoom(door.getLeadsToRoom());
+                    //setPosition(new Position(1,1)); //to do: set proper position
+                    map.changeRoom(door, getCurrentRoom(), this);
 
                 }
             }
@@ -92,6 +102,7 @@ public class Hero extends Entity implements ImageTile {
                 } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
                     weapon = (Weapon) item;
                     ((Item) item).setPosition(new Position(9, -1));
+                    System.out.println("Item picked up");
                 } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
                     inventory.add((Item) item);
                     ((Item) item).setPosition(new Position(9, -1));

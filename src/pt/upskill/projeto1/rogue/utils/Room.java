@@ -34,6 +34,17 @@ public class Room {
     public ArrayList<Enemy> getEnemyList() {
         return enemyList;
     }
+    public ArrayList<Item> getItemList() {
+        return itemList;
+    }
+
+    public ArrayList<Door> getDoorList() {
+        return doorList;
+    }
+
+    public ArrayList<Key> getKeyList() {
+        return keyList;
+    }
 
     public String getRoomPath() { //get room path for hero's current room
         switch (roomNumber){
@@ -50,19 +61,7 @@ public class Room {
         }
     }
 
-    public ArrayList<Item> getItemList() {
-        return itemList;
-    }
-
-    public ArrayList<Door> getDoorList() {
-        return doorList;
-    }
-
-    public ArrayList<Key> getKeyList() {
-        return keyList;
-    }
-
-    public void generateNewRoom() {
+    public void readTextRoom() {
 
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 10; y++) {
@@ -127,12 +126,13 @@ public class Room {
                             mapTiles.add(sword);
                             itemList.add(sword);
                             break;
-                        default:
+                        default: //door
                             if (Character.isDigit(character)){
                                 int i = character-'0';
                                 Door door = doorList.get(i);
                                 door.setPosition(new Position(x,y));
                                 mapTiles.add(door);
+                                doorList.add(door);
                             }
 
                     }
@@ -150,14 +150,14 @@ public class Room {
     }
 
     public boolean isWall(Position position) {
-        for (ImageTile tile : mapTiles) {
+        for (ImageTile tile : mapTiles) { //to do: run through wall list instead
             if (tile.getPosition().equals(position) && tile instanceof Wall)
                 return true;
         }
         return false;
     }
     public boolean isEnemy(Position position) {
-        for (ImageTile tile : mapTiles) {
+        for (ImageTile tile : mapTiles) { //to do: run through enemy list instead
             if (tile.getPosition().equals(position) && tile instanceof Enemy)
                 return true;
         }
@@ -171,17 +171,15 @@ public class Room {
         return false;
     }
     public boolean isClosedDoor(Position position) {
-        int i = 0;
-        for (ImageTile tile : mapTiles) {
-            if (tile.getPosition().equals(position) && tile.getName().equals("DoorClosed"))
+        for (Door door : doorList) {
+            if (door.getPosition().equals(position) && door.getName().equals("DoorClosed"))
                 return true;
         }
         return false;
     }
     public boolean isOpenDoor(Position position) {
-        int i = 0;
-        for (ImageTile tile : mapTiles) {
-            if (tile.getPosition().equals(position) && ((tile.getName().equals("DoorWay") || tile.getName().equals("DoorOpen"))))
+        for (Door door : doorList) {
+            if (door.getPosition().equals(position) && ((door.getName().equals("DoorWay") || door.getName().equals("DoorOpen"))))
                 return true;
         }
         return false;

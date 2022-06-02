@@ -26,6 +26,31 @@ public class Door implements ImageTile {
         this.requiredKey = requiredKey;
     }
 
+    public int getLeadsToRoom() {
+        switch (leadsToRoom){
+            case "room1.txt":
+                return (1);
+            case "room2.txt":
+                return (2);
+            case "room3.txt":
+                return (3);
+            case "room4.txt":
+                return (4);
+            default:
+                return (0);
+        }
+    }
+    public int getLeadsToDoor() {
+        switch (leadsToDoor){
+            case "1":
+                return (1);
+            case "2":
+                return (2);
+            default:
+                return (0);
+        }
+    }
+
     public void setType(String type) {
         this.type = type;
     }
