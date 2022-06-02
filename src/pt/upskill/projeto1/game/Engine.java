@@ -4,7 +4,7 @@ import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Entities.Enemy;
 import pt.upskill.projeto1.objects.Entities.Hero;
-import pt.upskill.projeto1.objects.TileColors.Black;
+import pt.upskill.projeto1.objects.StatusBar.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Map;
 import pt.upskill.projeto1.rogue.utils.Position;
 
@@ -13,11 +13,15 @@ import java.util.ArrayList;
 public class Engine {
     private Hero hero;
     private Map map;
+    private StatusBar statusBar = new StatusBar();
     //private Room room;
-    private ArrayList<ImageTile> mapTiles;
+    //private ArrayList<ImageTile> mapTiles;
 
     public void init(){
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+
+        ArrayList<ImageTile> roomTilesList = statusBar.getStatusList();
+        gui.newStatusImages(roomTilesList);
 
         hero = new Hero();
         hero.setPosition(new Position(6,8));
@@ -31,12 +35,6 @@ public class Engine {
 
         gui.setStatus("O jogo começou!");
 
-        ArrayList<ImageTile> statusBar = new ArrayList<>();
-        for (int i = 0; i < 10; i++){
-            statusBar.add(new Black(new Position(i, 0)));
-
-        }
-        gui.newStatusImages(statusBar);
 
         while (true){
             gui.update();
@@ -45,13 +43,11 @@ public class Engine {
     }
 
     public void notify(int keyPressed){
-        hero.move(keyPressed, map);
+        hero.init(keyPressed, map, statusBar);
         for (Enemy enemy : map.getCurrentRoom().getEnemyList()){
             enemy.move(map.getCurrentRoom(), hero);
         }
-//        if (hero.isDead()){
-//            init();
-//        }
+
     }
 
     public static void main(String[] args){

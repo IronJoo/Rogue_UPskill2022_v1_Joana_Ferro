@@ -1,17 +1,17 @@
-package pt.upskill.projeto1.objects.TileColors;
+package pt.upskill.projeto1.objects.StatusBar.StatusColors;
 
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
-public class Red extends Colors implements ImageTile {
+public class RedGreen extends Colors implements ImageTile {
 
-    public Red(Position position) {
+    public RedGreen(Position position) {
         super(position);
     }
 
     @Override
     public String getName() {
-        return "Red";
+        return "RedGreen";
     }
 
     @Override

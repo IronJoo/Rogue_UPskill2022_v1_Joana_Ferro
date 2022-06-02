@@ -1,10 +1,12 @@
 package pt.upskill.projeto1.objects.Entities;
 
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.Items.Weapons.Fireball;
 import pt.upskill.projeto1.objects.RoomElements.Door;
 import pt.upskill.projeto1.objects.Items.Item;
 import pt.upskill.projeto1.objects.Items.Meat;
 import pt.upskill.projeto1.objects.Items.Weapons.Weapon;
+import pt.upskill.projeto1.objects.StatusBar.StatusBar;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Map;
 import pt.upskill.projeto1.rogue.utils.Room;
@@ -15,7 +17,8 @@ import java.util.ArrayList;
 
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
-    private ArrayList<Item> inventory = new ArrayList<Item>();
+    private ArrayList<Item> inventory = new ArrayList<Item>(); //inventory is now limited to three items
+    private ArrayList<Fireball> fireballList = new ArrayList<Fireball>();
     private Weapon weapon = null;
     private int currentRoom = 0;
     private boolean isDead = false;
@@ -27,6 +30,9 @@ public class Hero extends Entity implements ImageTile {
     }
     public Hero(){
         super(100,10);
+        fireballList.add(new Fireball());
+        fireballList.add(new Fireball());
+        fireballList.add(new Fireball());
         //currentRoom = "./rooms/room0.txt";
     }
 
@@ -36,6 +42,14 @@ public class Hero extends Entity implements ImageTile {
 
     public void setCurrentRoom(int currentRoom) {
         this.currentRoom = currentRoom;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return inventory;
+    }
+
+    public ArrayList<Fireball> getFireballList() {
+        return fireballList;
     }
 
     @Override
@@ -50,7 +64,7 @@ public class Hero extends Entity implements ImageTile {
 //        this.currentRoom = currentRoom;
 //    }
 
-    public void move(int keyPressed, Map map) {
+    public void init(int keyPressed, Map map, StatusBar statusBar) {
         Room room = map.getCurrentRoom();
         switch (keyPressed) {
             case KeyEvent.VK_DOWN:
@@ -84,6 +98,7 @@ public class Hero extends Entity implements ImageTile {
                         totalDamage += weapon.getDamage();
                     }
                     ((Enemy) tile).receiveDamage(totalDamage);
+                    statusBar.update(getHealth(),getFireballList(),getInventory());
                     System.out.println("Enemy health = " + ((Enemy) tile).getHealth());
                 }
             }
@@ -105,11 +120,10 @@ public class Hero extends Entity implements ImageTile {
                     moveItemToOutOfView(item);
                 } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
                     switchWeapon((Weapon)item, map);
-                    weapon = (Weapon) item;
-                    moveItemToOutOfView(item);
+//                    weapon = (Weapon) item;
+//                    moveItemToOutOfView(item);
                 } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
-                    inventory.add((Item) item);
-                    moveItemToOutOfView(item);
+                    addToInventory(item);
                 }
             }
         }
@@ -121,7 +135,25 @@ public class Hero extends Entity implements ImageTile {
 //            map.getCurrentRoom().getMapTiles().add(droppedWeapon);
 //            itemList.add(droppedWeapon);
 //        }
-        weapon = newWeapon;
+        addToInventory(newWeapon);
+    }
+    private void addToInventory(Item item) {
+        if (!inventoryFull()){
+            inventory.add(item);
+            moveItemToOutOfView(item);
+            if (item instanceof Weapon)
+                weapon = (Weapon) item;
+        }
+    }
+    private boolean inventoryFull(){
+        int i = 0;
+        for (Item item : inventory){
+            i++;
+        }
+        if (i == 3){
+            return true;
+        }
+        return false;
     }
 
     private boolean hasWeapon() {
@@ -147,7 +179,7 @@ public class Hero extends Entity implements ImageTile {
         if (super.getHealth() - amount <= 0) {
             super.setHealth(0); //to do: add to gui
             //this.dies();
-            setDead(true);
+            //setDead(true);
         }
         else
             super.setHealth(super.getHealth() - amount);
