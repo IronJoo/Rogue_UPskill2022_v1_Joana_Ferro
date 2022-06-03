@@ -13,15 +13,11 @@ import java.util.ArrayList;
 public class Engine {
     private Hero hero;
     private Map map;
-    private StatusBar statusBar = new StatusBar();
     //private Room room;
     //private ArrayList<ImageTile> mapTiles;
 
     public void init(){
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-
-        ArrayList<ImageTile> roomTilesList = statusBar.getStatusList();
-        gui.newStatusImages(roomTilesList);
 
         hero = new Hero();
         hero.setPosition(new Position(6,8));
@@ -43,7 +39,7 @@ public class Engine {
     }
 
     public void notify(int keyPressed){
-        hero.init(keyPressed, map, statusBar);
+        hero.init(keyPressed, map);
         for (Enemy enemy : map.getCurrentRoom().getEnemyList()){
             enemy.move(map.getCurrentRoom(), hero);
         }

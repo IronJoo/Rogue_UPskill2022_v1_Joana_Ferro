@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects.Entities;
 
+import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Items.Weapons.Fireball;
 import pt.upskill.projeto1.objects.RoomElements.Door;
@@ -17,22 +18,24 @@ import java.util.ArrayList;
 
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
-    private ArrayList<Item> inventory = new ArrayList<Item>(); //inventory is now limited to three items
+    private ArrayList<Item> inventory = new ArrayList<Item>(); //inventory is limited to three items
     private ArrayList<Fireball> fireballList = new ArrayList<Fireball>();
+    private int numberOfFireballs = 3;
     private Weapon weapon = null;
     private int currentRoom = 0;
+    private StatusBar statusBar = new StatusBar();
     private boolean isDead = false;
 
-    public Hero(Position position) {
-
-        super(position); //to do: set health and damage values
-        //this.currentRoom = currentRoom;
-    }
+//    public Hero(Position position) {
+//
+//        super(position); //to do: set health and damage values
+//        //this.currentRoom = currentRoom;
+//    }
     public Hero(){
         super(100,10);
-        fireballList.add(new Fireball());
-        fireballList.add(new Fireball());
-        fireballList.add(new Fireball());
+//        fireballList.add(new Fireball());
+//        fireballList.add(new Fireball());
+//        fireballList.add(new Fireball());
         //currentRoom = "./rooms/room0.txt";
     }
 
@@ -64,7 +67,7 @@ public class Hero extends Entity implements ImageTile {
 //        this.currentRoom = currentRoom;
 //    }
 
-    public void init(int keyPressed, Map map, StatusBar statusBar) {
+    public void init(int keyPressed, Map map) {
         Room room = map.getCurrentRoom();
         switch (keyPressed) {
             case KeyEvent.VK_DOWN:
@@ -98,7 +101,7 @@ public class Hero extends Entity implements ImageTile {
                         totalDamage += weapon.getDamage();
                     }
                     ((Enemy) tile).receiveDamage(totalDamage);
-                    statusBar.update(getHealth(),getFireballList(),getInventory());
+                    //statusBar.update(getHealth(),getFireballList(),getInventory());
                     System.out.println("Enemy health = " + ((Enemy) tile).getHealth());
                 }
             }
@@ -127,6 +130,11 @@ public class Hero extends Entity implements ImageTile {
                 }
             }
         }
+        //ImageMatrixGUI statusGui = ImageMatrixGUI.getInstance();
+        //ArrayList<ImageTile> statusBarList = statusBar.getStatusList();
+        //statusGui.newStatusImages(statusBarList);
+        statusBar.update(getHealth());
+        //statusBar.update(getHealth(),numberOfFireballs,inventory);
     }
     private void switchWeapon(Weapon newWeapon, Map map){
 //        if (hasWeapon()) {  //to do: hero drops old weapon on the floor and picks up new one

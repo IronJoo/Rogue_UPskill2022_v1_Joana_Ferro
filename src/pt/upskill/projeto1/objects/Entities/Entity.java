@@ -4,7 +4,7 @@ import pt.upskill.projeto1.rogue.utils.Position;
 
 public abstract class Entity {
     private Position position;
-    private int health = 100;
+    private int health = 100; //limited to 100 through addHealth()
     private int damage;
 
     public Entity(Position position, int health, int damage) {
