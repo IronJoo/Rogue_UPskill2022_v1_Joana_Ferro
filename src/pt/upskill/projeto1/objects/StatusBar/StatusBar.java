@@ -1,8 +1,12 @@
 package pt.upskill.projeto1.objects.StatusBar;
 
+import pt.upskill.projeto1.gui.FireTile;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Entities.Hero;
+import pt.upskill.projeto1.objects.Items.Item;
+import pt.upskill.projeto1.objects.Items.Weapons.Fireball;
+import pt.upskill.projeto1.objects.Items.Weapons.Weapon;
 import pt.upskill.projeto1.objects.StatusBar.StatusColors.Black;
 import pt.upskill.projeto1.objects.StatusBar.StatusColors.Green;
 import pt.upskill.projeto1.objects.StatusBar.StatusColors.Red;
@@ -10,6 +14,7 @@ import pt.upskill.projeto1.objects.StatusBar.StatusColors.RedGreen;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StatusBar {
     private ArrayList<ImageTile> statusList = new ArrayList<>();
@@ -27,8 +32,11 @@ public class StatusBar {
     public void setStatusList(ArrayList<ImageTile> statusList) {
         this.statusList = statusList;
     }
-    public void getFireBalls(Hero hero){
-
+    public void getFireBalls(int numberOfFireballs){
+//        for (int i = 0; i < numberOfFireballs; i++){
+//            FireTile fireball = new Fireball(new Position(i, 0));
+//            statusList.add(fireball);
+//        }
     }
     public void getHealth(int health){
         //int healthDifference = 100 - health;
@@ -60,18 +68,44 @@ public class StatusBar {
             statusList.add(new Red(new Position(3, 0)));
         }
     }
-    public void getInventory(){
-
+    public void getInventory(HashMap<Integer, Item> inventory){
+        int key = 0;
+        for (int i = 7; i < 10; i++){
+            if (inventory.containsKey(key)){
+                Position position = new Position(i, 0);
+                Item copyOfItem = inventory.get(key);
+                //inventory.remove(key);
+                copyOfItem.setPosition(position);
+                statusList.add((ImageTile) copyOfItem);
+            }
+            key++;
+        }
+//        int j = 0;
+//        if (!inventory.isEmpty()) {
+//            for (int i = 7; i < 10; i++) {
+//                Item copyOfItem = inventory.get(j);
+//                copyOfItem.setPosition(new Position(i, 0));
+//                statusList.add((ImageTile) copyOfItem);
+//            }
+//        }
+//        int i = 7;
+//        int j = 0;
+//        for (Item item : inventory){ //to do: bugged!
+//            Item copyOfItem = inventory.get(j);
+//            copyOfItem.setPosition(new Position(i, 0));
+//            statusList.add((ImageTile) copyOfItem);
+//            i++;
+//        }
     }
-    public void update(int health /*, int numberOfFireballs, ArrayList inventory*/){
+    public void update(int health, int numberOfFireballs, HashMap<Integer, Item> inventory){
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
         statusList.clear();
         for (int i = 0; i < 10; i++){
             statusList.add(new Black(new Position(i, 0))); //set everything black
         }
         getHealth(health);
-//        getFireBalls(fireballList);
-//        getInventory(inventory);
+        getFireBalls(numberOfFireballs);
+        getInventory(inventory);
         gui.newStatusImages(statusList);
 
     }

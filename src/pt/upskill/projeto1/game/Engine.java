@@ -11,20 +11,15 @@ import pt.upskill.projeto1.rogue.utils.Position;
 import java.util.ArrayList;
 
 public class Engine {
-    private Hero hero;
-    private Map map;
+    private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
+    private Map map = new Map(gui);
     //private Room room;
     //private ArrayList<ImageTile> mapTiles;
 
     public void init(){
-        ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
-
-        hero = new Hero();
-        hero.setPosition(new Position(6,8));
-        map = new Map(gui);
         gui.setEngine(this);
         int startingRoom = 0;
-        map.runRoomEngine(startingRoom, hero);
+        map.runRoomEngine(startingRoom);
 
         //gui.newStatusImages();
         gui.go();
@@ -39,11 +34,7 @@ public class Engine {
     }
 
     public void notify(int keyPressed){
-        hero.init(keyPressed, map);
-        for (Enemy enemy : map.getCurrentRoom().getEnemyList()){
-            enemy.move(map.getCurrentRoom(), hero);
-        }
-
+        map.update(keyPressed);
     }
 
     public static void main(String[] args){

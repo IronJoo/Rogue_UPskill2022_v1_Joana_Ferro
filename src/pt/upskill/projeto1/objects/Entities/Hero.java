@@ -2,31 +2,32 @@ package pt.upskill.projeto1.objects.Entities;
 
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
+import pt.upskill.projeto1.objects.Items.Key;
 import pt.upskill.projeto1.objects.Items.Weapons.Fireball;
 import pt.upskill.projeto1.objects.RoomElements.Door;
 import pt.upskill.projeto1.objects.Items.Item;
 import pt.upskill.projeto1.objects.Items.Meat;
 import pt.upskill.projeto1.objects.Items.Weapons.Weapon;
 import pt.upskill.projeto1.objects.StatusBar.StatusBar;
-import pt.upskill.projeto1.rogue.utils.Direction;
-import pt.upskill.projeto1.rogue.utils.Map;
-import pt.upskill.projeto1.rogue.utils.Room;
-import pt.upskill.projeto1.rogue.utils.Position;
+import pt.upskill.projeto1.rogue.utils.*;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
-    private ArrayList<Item> inventory = new ArrayList<Item>(); //inventory is limited to three items
-    private ArrayList<Fireball> fireballList = new ArrayList<Fireball>();
+    private HashMap<Integer, Item> inventory = new HashMap<Integer, Item>(); //inventory is limited to three items
+    //private ArrayList<Fireball> fireballList = new ArrayList<Fireball>();
+    private ArrayList<Key> keyList = new ArrayList<>();
     private int numberOfFireballs = 3;
+    private ItemObserver itemObserver;
     private Weapon weapon = null;
     private int currentRoom = 0;
     private StatusBar statusBar = new StatusBar();
     private boolean isDead = false;
 
-//    public Hero(Position position) {
+    //    public Hero(Position position) {
 //
 //        super(position); //to do: set health and damage values
 //        //this.currentRoom = currentRoom;
@@ -47,12 +48,19 @@ public class Hero extends Entity implements ImageTile {
         this.currentRoom = currentRoom;
     }
 
-    public ArrayList<Item> getInventory() {
+    public HashMap<Integer, Item> getInventory() {
         return inventory;
     }
 
-    public ArrayList<Fireball> getFireballList() {
-        return fireballList;
+    public int getNumberOfFireballs() {
+        return numberOfFireballs;
+    }
+    //    public ArrayList<Fireball> getFireballList() {
+//        return fireballList;
+//    }
+
+    public StatusBar getStatusBar() {
+        return statusBar;
     }
 
     @Override
@@ -81,60 +89,89 @@ public class Hero extends Entity implements ImageTile {
         }
         Direction direction = toDirection(keyPressed);
         Position nextPosition = super.getPosition().plus(direction.asVector());
-        if (!room.findsCollision(nextPosition)) {
-            super.setPosition(nextPosition);
-        }
-        if (room.isClosedDoor(nextPosition)) {
-            for (ImageTile tile : room.getMapTiles()) {
-                if (tile.getPosition().equals(nextPosition) && tile instanceof Door) {
-                    //if (hero has key and it matches door key)
-                    ((Door) tile).setType("D");
-                    ((Door) tile).setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
-                }
+        if (!isOutOfBounds(nextPosition)){ //prevents hero from moving out of bounds after being teleported to next room's door
+            if (!room.findsCollision(nextPosition)) {
+                super.setPosition(nextPosition);
             }
-        }
-        if (room.isEnemy(nextPosition)) { //attack
-            for (ImageTile tile : room.getMapTiles()) {
-                if (tile.getPosition().equals(nextPosition) && tile instanceof Enemy) {
-                    int totalDamage = getDamage();
-                    if (hasWeapon()) {
-                        totalDamage += weapon.getDamage();
+            if (room.isEnemy(nextPosition)) { //attack
+                for (Enemy enemy : room.getEnemyList()) {
+                    if (enemy.getPosition().equals(nextPosition)) {
+                        int totalDamage = getDamage();
+                        if (hasWeapon())
+                            totalDamage += weapon.getDamage();
+                        ((Enemy) enemy).receiveDamage(totalDamage);
+                        //statusBar.update(getHealth(),getFireballList(),getInventory());
+                        System.out.println("Enemy health = " + ((Enemy) enemy).getHealth());
+                        break; //break the cycle when corresponding enemy was found, no need to keep cycling afterwards
                     }
-                    ((Enemy) tile).receiveDamage(totalDamage);
-                    //statusBar.update(getHealth(),getFireballList(),getInventory());
-                    System.out.println("Enemy health = " + ((Enemy) tile).getHealth());
                 }
             }
-        }
-        if (room.isOpenDoor(getPosition())) {
-            for (Door door : room.getDoorList()) {
-                if (door.getPosition().equals(getPosition()) && (door.getName().equals("DoorOpen") || door.getName().equals("DoorWay"))) {
-                    setCurrentRoom(door.getLeadsToRoom());
-                    //setPosition(new Position(1,1)); //to do: set proper position
-                    map.changeRoom(door, getCurrentRoom(), this);
-
+            if (room.isClosedDoor(nextPosition)) {
+                for (Door door : room.getDoorList()) {
+                    if (door.getPosition().equals(nextPosition) && door instanceof Door) {
+                        if (door.requiresKey() && heroHasKey(door)) { //if (hero has key and it matches door key)
+                            door.setRequiresKey(false);
+                            door.setType("D");
+                            door.setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
+                            break;
+                        } else if (!door.requiresKey()) {
+                            door.setType("D");
+                            door.setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
+                            break;
+                        }
+                    }
                 }
             }
-        }
-        if (room.isItem(nextPosition)) {
-            for (Item item : room.getItemList()) {
-                if (item.getPosition().equals(nextPosition) && item instanceof Meat) {
-                    super.addHealth(new Meat().getHealthValue()); //bad practice! fix later: get value of actual piece of meat and not from a new instance
-                    moveItemToOutOfView(item);
-                } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
-                    switchWeapon((Weapon)item, map);
+            if (room.isOpenDoor(getPosition())) {
+                for (Door door : room.getDoorList()) {
+                    if (door.getPosition().equals(getPosition()) && (door.getName().equals("DoorOpen") || door.getName().equals("DoorWay"))) {
+                        //System.out.println(door.toString());
+                        setCurrentRoom(door.getLeadsToRoom());
+                        map.changeRoom(door, getCurrentRoom(), this);
+                        break; //this break is required or for loop will continue reading doors from the new room??
+                    }
+                }
+            }
+            if (room.isItem(nextPosition)) {
+                for (Item item : room.getItemList()) {
+                    if (item.getPosition().equals(nextPosition) && item instanceof Meat) {
+                        super.addHealth(((Meat) item).getHealthValue());
+                        moveItemToOutOfView(item);
+                        break;
+                    } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
+                        switchWeapon((Weapon) item, map);
 //                    weapon = (Weapon) item;
 //                    moveItemToOutOfView(item);
-                } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
-                    addToInventory(item);
+                        break;
+                    } else if (item.getPosition().equals(nextPosition) && item instanceof Key) {
+                        addToInventory(item);
+                        break;
+                    } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
+                        addToInventory(item);
+                        break;
+                    }
                 }
             }
         }
         //ImageMatrixGUI statusGui = ImageMatrixGUI.getInstance();
         //ArrayList<ImageTile> statusBarList = statusBar.getStatusList();
         //statusGui.newStatusImages(statusBarList);
-        statusBar.update(getHealth());
+        statusBar.update(getHealth(), getNumberOfFireballs(), getInventory());
         //statusBar.update(getHealth(),numberOfFireballs,inventory);
+    }
+    private boolean isOutOfBounds(Position position){
+        if (position.getX() == -1 || position.getX() == 10)
+            return true;
+        if (position.getY() == -1 || position.getY() == 10)
+            return true;
+        return false;
+    }
+    private boolean heroHasKey(Door door){
+        for (Key key : keyList){
+            if (door.getRequiredKey().equals(key.getKeyName()))
+                return true;
+        }
+        return false;
     }
     private void switchWeapon(Weapon newWeapon, Map map){
 //        if (hasWeapon()) {  //to do: hero drops old weapon on the floor and picks up new one
@@ -146,23 +183,47 @@ public class Hero extends Entity implements ImageTile {
         addToInventory(newWeapon);
     }
     private void addToInventory(Item item) {
-        if (!inventoryFull()){
-            inventory.add(item);
-            moveItemToOutOfView(item);
-            if (item instanceof Weapon)
-                weapon = (Weapon) item;
+        if (!inventory.containsKey(0)){
+            inventory.put(0, item);
+            if (item instanceof Key)
+                keyList.add((Key)item);
+            statusBar.update(getHealth(), numberOfFireballs, inventory);
+            //inventory.remove(0);
+            //moveItemToOutOfView(item);
         }
+        else if (!inventory.containsKey(1)){
+            inventory.put(1, item);
+            if (item instanceof Key)
+                keyList.add((Key)item);
+            statusBar.update(getHealth(), numberOfFireballs, inventory);
+            //inventory.remove(0);
+            //moveItemToOutOfView(item);
+        } else if (!inventory.containsKey(2)){
+            inventory.put(2, item);
+            if (item instanceof Key)
+                keyList.add((Key)item);
+            statusBar.update(getHealth(), numberOfFireballs, inventory);
+            //inventory.remove(0);
+            //moveItemToOutOfView(item);
+        }
+        //----------------------
+//        if (!inventoryFull()){ //old method for when inventory was an ArrayList
+//            inventory.add(item);
+//            moveItemToOutOfView(item);
+//            if (item instanceof Weapon)
+//                weapon = (Weapon) item;
+//        }
     }
-    private boolean inventoryFull(){
-        int i = 0;
-        for (Item item : inventory){
-            i++;
-        }
-        if (i == 3){
-            return true;
-        }
-        return false;
-    }
+//    private boolean inventoryFull(){ //old method for when inventory was an ArrayList
+//        int i = 0;
+//        for (Item item : inventory){
+//            i++;
+//        }
+//        if (i == 3){
+//            return true;
+//        }
+//        return false;
+//    }
 
     private boolean hasWeapon() {
         return weapon != null;

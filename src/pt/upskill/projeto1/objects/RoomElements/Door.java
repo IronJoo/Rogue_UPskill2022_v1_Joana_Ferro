@@ -10,6 +10,7 @@ public class Door implements ImageTile {
     private String leadsToRoom;
     private String leadsToDoor;
     private String requiredKey;
+    private boolean requiresKey = false;
     private boolean isOpen = false;
 
     public Door(Position position) {
@@ -24,6 +25,7 @@ public class Door implements ImageTile {
     public Door(String number, String type, String leadsToRoom, String leadsToDoor, String requiredKey){
         this(number, type, leadsToRoom, leadsToDoor);
         this.requiredKey = requiredKey;
+        requiresKey = true;
     }
 
     public int getLeadsToRoom() {
@@ -49,6 +51,18 @@ public class Door implements ImageTile {
             default:
                 return (0);
         }
+    }
+
+    public boolean requiresKey() {
+        return requiresKey;
+    }
+
+    public void setRequiresKey(boolean requiresKey) {
+        this.requiresKey = requiresKey;
+    }
+
+    public String getRequiredKey() {
+        return requiredKey;
     }
 
     public void setType(String type) {
@@ -80,4 +94,16 @@ public class Door implements ImageTile {
         this.position = position;
     }
 
+    @Override
+    public String toString() {
+        return "Door{" +
+                "position=" + position +
+                ", number='" + number + '\'' +
+                ", type='" + type + '\'' +
+                ", leadsToRoom='" + leadsToRoom + '\'' +
+                ", leadsToDoor='" + leadsToDoor + '\'' +
+                ", requiredKey='" + requiredKey + '\'' +
+                ", isOpen=" + isOpen +
+                '}';
+    }
 }
