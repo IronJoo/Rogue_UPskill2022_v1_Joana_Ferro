@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 public class Hero extends Entity implements ImageTile {
     //private String currentRoom;
+    ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private HashMap<Integer, Item> inventory = new HashMap<Integer, Item>(); //inventory is limited to three items
     //private ArrayList<Fireball> fireballList = new ArrayList<Fireball>();
     private ArrayList<Key> keyList = new ArrayList<>();
@@ -62,7 +63,13 @@ public class Hero extends Entity implements ImageTile {
     public StatusBar getStatusBar() {
         return statusBar;
     }
+    public boolean isDead() {
+        return isDead;
+    }
 
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
     @Override
     public String getName() {
         return "Hero";
@@ -153,13 +160,10 @@ public class Hero extends Entity implements ImageTile {
                 }
             }
         }
-        //ImageMatrixGUI statusGui = ImageMatrixGUI.getInstance();
-        //ArrayList<ImageTile> statusBarList = statusBar.getStatusList();
-        //statusGui.newStatusImages(statusBarList);
         statusBar.update(getHealth(), getNumberOfFireballs(), getInventory());
-        //statusBar.update(getHealth(),numberOfFireballs,inventory);
+
     }
-    private boolean isOutOfBounds(Position position){
+    private boolean isOutOfBounds(Position position){ //checks if hero is out of visual tiles
         if (position.getX() == -1 || position.getX() == 10)
             return true;
         if (position.getY() == -1 || position.getY() == 10)
@@ -246,27 +250,15 @@ public class Hero extends Entity implements ImageTile {
     }
     public void receiveDamage(int amount){
         if (super.getHealth() - amount <= 0) {
-            super.setHealth(0); //to do: add to gui
-            //this.dies();
-            //setDead(true);
+            super.setHealth(0);
+            this.dies();
         }
         else
             super.setHealth(super.getHealth() - amount);
     }
 
-    public boolean isDead() {
-        return isDead;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
-    }
-
-    public void dies(){ //to do: FIX!!! NOT WORKING
-        //ImageMatrixGUI newGui = ImageMatrixGUI.getInstance();
-        //Map newMapAfterDeath = new Map(newGui);
-        //newGui.setEngine(??);
-        //newMapAfterDeath.runRoomEngine(0, new Hero());
-        // -------
+    public void dies(){
+        gui.showMessage("GAME OVER","Game over! Restart game and try again.");
+        setDead(true);
     }
 }

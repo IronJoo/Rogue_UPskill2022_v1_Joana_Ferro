@@ -11,12 +11,12 @@ import java.util.HashMap;
 
 public class Map {
     private HashMap<Integer, Room> roomList = new HashMap<Integer, Room>();
-    private ImageMatrixGUI gameEngine;
+    private ImageMatrixGUI gui;
     private Room currentRoom;
     private Hero hero = new Hero();
 
-    public Map(ImageMatrixGUI gameEngine) {
-        this.gameEngine = gameEngine;
+    public Map(ImageMatrixGUI gui) {
+        this.gui = gui;
     }
 
     public HashMap<Integer, Room> getRoomList() {
@@ -27,12 +27,12 @@ public class Map {
         return currentRoom;
     }
 
-    public Room getRoom(int roomNumber){
-        if (roomList.containsKey(roomNumber)) { //if room exists in list
-            return (roomList.get(roomNumber));  //return it
+    public Room getRoom(int roomNumber){ //if room exists in list, return it. Else generate new room and add it to room list
+        if (roomList.containsKey(roomNumber)) {
+            return (roomList.get(roomNumber));
         }
         else {
-            Room newRoom = new Room(roomNumber); //else generate new room and add it to room list
+            Room newRoom = new Room(roomNumber);
             newRoom.readTextRoom();
             roomList.put(roomNumber, newRoom);
             return (newRoom);
@@ -44,16 +44,16 @@ public class Map {
         //Hero hero = new Hero();
         hero.setPosition(new Position(6,8));
         hero.getStatusBar().update(hero.getHealth(), hero.getNumberOfFireballs(), hero.getInventory());
-        gameEngine.clearImages();
+        gui.clearImages();
         currentRoom = getRoom(roomNumber);
         ArrayList<ImageTile> mapTiles;
         mapTiles = currentRoom.getMapTiles();
-        ItemObserver itemObserver = new ItemObserver(gameEngine);
+        ItemObserver itemObserver = new ItemObserver(gui);
         hero.setPosition(new Position(4, 3));
         mapTiles.add(hero);
         //gui.setStatus();
         //gui.addStatusImage();
-        gameEngine.newImages(mapTiles);
+        gui.newImages(mapTiles);
     }
     public void changeRoom(Door previousDoor, int nextRoomNumber, Hero hero){
 
@@ -62,9 +62,11 @@ public class Map {
         hero.setPosition(currentRoom.getDoorList().get(nextDoor).getPosition());
     }
     public void update(int keyPressed){
-        hero.init(keyPressed, this);
-        for (Enemy enemy : getCurrentRoom().getEnemyList()){
-            enemy.move(getCurrentRoom(), hero);
+        if (!hero.isDead()) {
+            hero.init(keyPressed, this);
+            for (Enemy enemy : getCurrentRoom().getEnemyList()) {
+                enemy.move(getCurrentRoom(), hero);
+            }
         }
     }
 }

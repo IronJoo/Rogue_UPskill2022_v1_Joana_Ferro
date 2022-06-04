@@ -20,8 +20,6 @@ public class Engine {
         gui.setEngine(this);
         int startingRoom = 0;
         map.runRoomEngine(startingRoom);
-
-        //gui.newStatusImages();
         gui.go();
 
         gui.setStatus("O jogo começou!");
