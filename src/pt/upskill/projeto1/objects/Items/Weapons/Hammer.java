@@ -7,7 +7,7 @@ public class Hammer extends Weapon implements ImageTile {
 
     public Hammer(Position position) {
         super(position);
-        super.setDamage(30);
+        super.setDamage(20);
     }
     @Override
     public String getName() {

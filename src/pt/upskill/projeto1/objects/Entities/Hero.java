@@ -24,6 +24,7 @@ public class Hero extends Entity implements ImageTile {
     private int numberOfFireballs = 3;
     private ItemObserver itemObserver;
     private Weapon weapon = null;
+    private boolean hasWeapon = false;
     private int currentRoom = 0;
     private StatusBar statusBar = new StatusBar();
     private boolean isDead = false;
@@ -70,6 +71,15 @@ public class Hero extends Entity implements ImageTile {
     public void setDead(boolean dead) {
         isDead = dead;
     }
+
+    public boolean isHasWeapon() {
+        return hasWeapon;
+    }
+
+    public void setHasWeapon(boolean hasWeapon) {
+        this.hasWeapon = hasWeapon;
+    }
+
     @Override
     public String getName() {
         return "Hero";
@@ -104,8 +114,9 @@ public class Hero extends Entity implements ImageTile {
                 for (Enemy enemy : room.getEnemyList()) {
                     if (enemy.getPosition().equals(nextPosition)) {
                         int totalDamage = getDamage();
-                        if (hasWeapon())
+                        if (hasWeapon)
                             totalDamage += weapon.getDamage();
+                        System.out.println("Total damage = " + totalDamage);
                         ((Enemy) enemy).receiveDamage(totalDamage);
                         //statusBar.update(getHealth(),getFireballList(),getInventory());
                         System.out.println("Enemy health = " + ((Enemy) enemy).getHealth());
@@ -120,7 +131,10 @@ public class Hero extends Entity implements ImageTile {
                             door.setRequiresKey(false);
                             door.setType("D");
                             door.setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
+                            gui.setStatus("You have successfuly opened the door!");
                             break;
+                        } else if (door.requiresKey() && !heroHasKey(door)) {
+                            gui.setStatus("You do not have the right key to open this door!");
                         } else if (!door.requiresKey()) {
                             door.setType("D");
                             door.setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
@@ -144,17 +158,21 @@ public class Hero extends Entity implements ImageTile {
                     if (item.getPosition().equals(nextPosition) && item instanceof Meat) {
                         super.addHealth(((Meat) item).getHealthValue());
                         moveItemToOutOfView(item);
+                        gui.setStatus("You have eaten some food.");
                         break;
                     } else if (item.getPosition().equals(nextPosition) && item instanceof Weapon) {
                         switchWeapon((Weapon) item, map);
+                        gui.setStatus("You have picked up a weapon.");
 //                    weapon = (Weapon) item;
 //                    moveItemToOutOfView(item);
                         break;
                     } else if (item.getPosition().equals(nextPosition) && item instanceof Key) {
                         addToInventory(item);
+                        gui.setStatus("You have picked up a key.");
                         break;
                     } else if (item.getPosition().equals(nextPosition) && item instanceof Item) {
                         addToInventory(item);
+                        gui.setStatus("You have picked up an item.");
                         break;
                     }
                 }
@@ -177,35 +195,38 @@ public class Hero extends Entity implements ImageTile {
         }
         return false;
     }
-    private void switchWeapon(Weapon newWeapon, Map map){
+    private void switchWeapon(Weapon newWeapon, Map map) {
 //        if (hasWeapon()) {  //to do: hero drops old weapon on the floor and picks up new one
 //            Weapon droppedWeapon = weapon;
 //            droppedWeapon.setPosition(getPosition());
 //            map.getCurrentRoom().getMapTiles().add(droppedWeapon);
 //            itemList.add(droppedWeapon);
 //        }
+//            addToInventory(newWeapon);
+        //}
         addToInventory(newWeapon);
-    }
+        weapon = newWeapon;
+        hasWeapon = true;
+        }
     private void addToInventory(Item item) {
-        if (!inventory.containsKey(0)){
+        if (!inventory.containsKey(0)) {
             inventory.put(0, item);
             if (item instanceof Key)
-                keyList.add((Key)item);
+                keyList.add((Key) item);
             statusBar.update(getHealth(), numberOfFireballs, inventory);
             //inventory.remove(0);
             //moveItemToOutOfView(item);
-        }
-        else if (!inventory.containsKey(1)){
+        } else if (!inventory.containsKey(1)) {
             inventory.put(1, item);
             if (item instanceof Key)
-                keyList.add((Key)item);
+                keyList.add((Key) item);
             statusBar.update(getHealth(), numberOfFireballs, inventory);
             //inventory.remove(0);
             //moveItemToOutOfView(item);
-        } else if (!inventory.containsKey(2)){
+        } else if (!inventory.containsKey(2)) {
             inventory.put(2, item);
             if (item instanceof Key)
-                keyList.add((Key)item);
+                keyList.add((Key) item);
             statusBar.update(getHealth(), numberOfFireballs, inventory);
             //inventory.remove(0);
             //moveItemToOutOfView(item);
@@ -217,7 +238,6 @@ public class Hero extends Entity implements ImageTile {
 //            if (item instanceof Weapon)
 //                weapon = (Weapon) item;
 //        }
-    }
 //    private boolean inventoryFull(){ //old method for when inventory was an ArrayList
 //        int i = 0;
 //        for (Item item : inventory){
@@ -228,10 +248,10 @@ public class Hero extends Entity implements ImageTile {
 //        }
 //        return false;
 //    }
-
-    private boolean hasWeapon() {
-        return weapon != null;
     }
+//    private boolean hasWeapon() {
+//        return weapon != null;
+//    }
     private void moveItemToOutOfView(Item item){
         item.setPosition(new Position(9, -1));
     }
@@ -255,10 +275,13 @@ public class Hero extends Entity implements ImageTile {
         }
         else
             super.setHealth(super.getHealth() - amount);
+        if (!isDead)
+            gui.setStatus("You are being attacked!");
     }
 
     public void dies(){
-        gui.showMessage("GAME OVER","Game over! Restart game and try again.");
+        gui.showMessage("Game Over","Game over! Restart game and try again.");
+        gui.setStatus("Game over! Restart game and try again.");
         setDead(true);
     }
 }

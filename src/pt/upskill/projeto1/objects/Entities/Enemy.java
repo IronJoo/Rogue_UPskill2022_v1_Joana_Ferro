@@ -40,8 +40,6 @@ public abstract class Enemy extends Entity implements ImageTile {
 
         } else if (distance == 1 && (calculateYDifference(getPosition(), entity.getPosition()) == 0 || calculateXDifference(getPosition(), entity.getPosition()) == 0)){ //if enemy is next to hero && in same x or y, attack
             entity.receiveDamage(getDamage());
-            gui.setStatus("Hero health = " + entity.getHealth());
-            //System.out.println("Hero health = " + entity.getHealth());
         }
     }
     public int calculateXDifference (Position enemy, Position hero){
@@ -118,6 +116,7 @@ public abstract class Enemy extends Entity implements ImageTile {
     @Override
     public void dies() { //when enemy dies, it is moved to out of view
         super.setPosition(new Position(-1, -1));
+        gui.setStatus("You have killed an enemy!");
     }
 }
 

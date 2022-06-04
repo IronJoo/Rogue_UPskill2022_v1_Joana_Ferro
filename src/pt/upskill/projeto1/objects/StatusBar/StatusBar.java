@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class StatusBar {
+    ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private ArrayList<ImageTile> statusList = new ArrayList<>();
     public StatusBar() {
 
@@ -60,12 +61,15 @@ public class StatusBar {
         }
         if (health < 39){
             statusList.add(new Red(new Position(4, 0)));
+            gui.setStatus("You're almost dead! Get some food.");
         }
         if (health < 26){
             statusList.add(new RedGreen(new Position(3, 0)));
+            gui.setStatus("You're almost dead! Get some food.");
         }
         if (health < 14){
             statusList.add(new Red(new Position(3, 0)));
+            gui.setStatus("You're almost dead! Get some food.");
         }
     }
     public void getInventory(HashMap<Integer, Item> inventory){

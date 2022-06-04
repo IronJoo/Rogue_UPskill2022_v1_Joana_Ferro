@@ -4,7 +4,7 @@ import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Position;
 
 public class Meat extends Item implements ImageTile {
-    private int healthValue = 10;
+    private int healthValue = 15;
     public Meat(){}
 
     public Meat(Position position) {

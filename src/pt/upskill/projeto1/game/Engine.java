@@ -21,8 +21,7 @@ public class Engine {
         int startingRoom = 0;
         map.runRoomEngine(startingRoom);
         gui.go();
-
-        gui.setStatus("O jogo começou!");
+        gui.setStatus("The game has started!");
 
 
         while (true){
