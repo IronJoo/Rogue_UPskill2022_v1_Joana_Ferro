@@ -39,9 +39,8 @@ public class Map {
         }
 
     }
-    public void runRoomEngine(int roomNumber){ //creates room graphics
+    public void runRoomEngine(int roomNumber){ //initiates all visual elements
 
-        //Hero hero = new Hero();
         hero.setPosition(new Position(6,8));
         hero.getStatusBar().update(hero.getHealth(), hero.getNumberOfFireballs(), hero.getInventory());
         gui.clearImages();
@@ -55,18 +54,20 @@ public class Map {
         //gui.addStatusImage();
         gui.newImages(mapTiles);
     }
-    public void changeRoom(Door previousDoor, int nextRoomNumber, Hero hero){
+    public void changeRoom(Door previousDoor, int nextRoomNumber, Hero hero){ //set visual elements to next room
 
         int nextDoor = previousDoor.getLeadsToDoor();
         runRoomEngine(nextRoomNumber);
         hero.setPosition(currentRoom.getDoorList().get(nextDoor).getPosition());
     }
-    public void update(int keyPressed){
+    public void update(int keyPressed){ //updates game interactions and functionalities after each key press
         if (!hero.isDead()) {
-            hero.init(keyPressed, this);
+            hero.update(keyPressed, this);
             for (Enemy enemy : getCurrentRoom().getEnemyList()) {
-                enemy.init(getCurrentRoom(), hero);
+                enemy.update(getCurrentRoom(), hero);
             }
+            if (hero.isDead()) //prevents statusBar from updating after hero has died
+                return;
             hero.getStatusBar().update(hero.getHealth(), hero.getNumberOfFireballs(), hero.getInventory());
         }
     }

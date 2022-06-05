@@ -27,7 +27,7 @@ public abstract class Enemy extends Entity implements ImageTile {
         super(position);
     }
 
-    public void init(Room room, Entity entity) {
+    public void update(Room room, Entity entity) {
         int distance = calculateDistance(entity);
         if (distance > 4) {             //if hero is distant, move randomly
             Direction direction = toDirection(new Random().nextInt(4));
@@ -59,14 +59,12 @@ public abstract class Enemy extends Entity implements ImageTile {
                     Position nextPosition = super.getPosition().plus(Direction.LEFT.asVector());
                     if (!room.findsCollision(nextPosition)) {
                         setPosition(nextPosition);
-                        //System.out.println("Moving to the left");
                     }
                 }
                 else if (xDifference < 0){
                     Position nextPosition = super.getPosition().plus(Direction.RIGHT.asVector());
                     if (!room.findsCollision(nextPosition)) {
                         setPosition(nextPosition);
-                        //System.out.println("Moving to the right");
                     }
                 }
                 break;
@@ -75,14 +73,12 @@ public abstract class Enemy extends Entity implements ImageTile {
                     Position nextPosition = super.getPosition().plus(Direction.UP.asVector());
                     if (!room.findsCollision(nextPosition)) {
                         setPosition(nextPosition);
-                        //System.out.println("Moving up");
                     }
                 }
                 else if (yDifference < 0){
                     Position nextPosition = super.getPosition().plus(Direction.DOWN.asVector());
                     if (!room.findsCollision(nextPosition)) {
                         setPosition(nextPosition);
-                        //System.out.println("Moving down");
                     }
                 }
                 break;

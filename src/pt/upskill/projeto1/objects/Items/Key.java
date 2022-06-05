@@ -10,7 +10,6 @@ public class Key extends Item implements ImageTile {
         super(position);
     }
     public Key(String keyName){
-        //this(new Position(-1, -1)); //Position is mandatory, therefore setting position to out of view until new reset
         this.keyName = keyName;
     }
 

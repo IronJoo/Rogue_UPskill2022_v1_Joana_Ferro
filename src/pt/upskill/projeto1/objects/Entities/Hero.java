@@ -3,7 +3,6 @@ package pt.upskill.projeto1.objects.Entities;
 import pt.upskill.projeto1.gui.ImageMatrixGUI;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.objects.Items.Key;
-import pt.upskill.projeto1.objects.Items.Weapons.Fireball;
 import pt.upskill.projeto1.objects.RoomElements.Door;
 import pt.upskill.projeto1.objects.Items.Item;
 import pt.upskill.projeto1.objects.Items.Meat;
@@ -92,7 +91,7 @@ public class Hero extends Entity implements ImageTile {
 //        this.currentRoom = currentRoom;
 //    }
 
-    public void init(int keyPressed, Map map) {
+    public void update(int keyPressed, Map map) {
         Room room = map.getCurrentRoom();
         switch (keyPressed) {
             case KeyEvent.VK_DOWN:
@@ -116,10 +115,7 @@ public class Hero extends Entity implements ImageTile {
                         int totalDamage = getDamage();
                         if (hasWeapon)
                             totalDamage += weapon.getDamage();
-                        System.out.println("Total damage = " + totalDamage);
                         ((Enemy) enemy).receiveDamage(totalDamage);
-                        //statusBar.update(getHealth(),getFireballList(),getInventory());
-                        System.out.println("Enemy health = " + ((Enemy) enemy).getHealth());
                         break; //break the cycle when corresponding enemy was found, no need to keep cycling afterwards
                     }
                 }
@@ -146,14 +142,13 @@ public class Hero extends Entity implements ImageTile {
             if (room.isOpenDoor(getPosition())) {
                 for (Door door : room.getDoorList()) {
                     if (door.getPosition().equals(getPosition()) && (door.getName().equals("DoorOpen") || door.getName().equals("DoorWay"))) {
-                        //System.out.println(door.toString());
                         setCurrentRoom(door.getLeadsToRoom());
                         map.changeRoom(door, getCurrentRoom(), this);
                         break; //this break is required or for loop will continue reading doors from the new room??
                     }
                 }
             }
-            if (room.isItem(nextPosition)) {
+            if (room.isItem(getPosition())) {
                 for (Item item : room.getItemList()) {
                     if (item.getPosition().equals(nextPosition) && item instanceof Meat) {
                         super.addHealth(((Meat) item).getHealthValue());
@@ -177,9 +172,11 @@ public class Hero extends Entity implements ImageTile {
                     }
                 }
             }
+            if (room.isTrap(getPosition())){
+                receiveDamage(5);
+                gui.setStatus("Ouch! Stepping on a trap hurts.");
+            }
         }
-        //statusBar.update(getHealth(), getNumberOfFireballs(), getInventory());
-
     }
     private boolean isOutOfBounds(Position position){ //checks if hero is out of visual tiles
         if (position.getX() == -1 || position.getX() == 10)
@@ -280,8 +277,8 @@ public class Hero extends Entity implements ImageTile {
     }
 
     public void dies(){
+        setDead(true);
         gui.showMessage("Game Over","Game over! Restart game and try again.");
         gui.setStatus("Game over! Restart game and try again.");
-        setDead(true);
     }
 }

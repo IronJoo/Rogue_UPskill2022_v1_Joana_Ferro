@@ -168,8 +168,8 @@ public class Room {
         return false;
     }
     public boolean isEnemy(Position position) {
-        for (ImageTile tile : mapTiles) { //to do: run through enemy list instead
-            if (tile.getPosition().equals(position) && tile instanceof Enemy)
+        for (Enemy enemy : enemyList) {
+            if (enemy.getPosition().equals(position))
                 return true;
         }
         return false;
@@ -198,9 +198,15 @@ public class Room {
     public boolean isItem(Position position) {
         for (Item item : itemList) {
             if (item.getPosition().equals(position)) {
-                System.out.println("This is an item");
                 return true;
             }
+        }
+        return false;
+    }
+    public boolean isTrap(Position position) {
+        for (ImageTile tile : mapTiles){
+            if (tile.getPosition().equals(position) && tile.getName().equals("Trap"))
+                return true;
         }
         return false;
     }

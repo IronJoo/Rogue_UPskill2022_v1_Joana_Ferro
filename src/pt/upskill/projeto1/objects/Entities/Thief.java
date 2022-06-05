@@ -31,9 +31,8 @@ public class Thief extends Enemy implements ImageTile {
     }
 
     @Override
-    public void init(Room room, Entity entity) {
+    public void update(Room room, Entity entity) {
         int distance = calculateDistance(entity);
-        System.out.println("Distance = " + distance);
         if (distance > 4) {             //if hero is distant, move randomly
             Direction direction = toDirection(new Random().nextInt(4));
             Position nextPosition = super.getPosition().plus(direction.asVector());
@@ -44,9 +43,7 @@ public class Thief extends Enemy implements ImageTile {
             moveToDirectionOf(entity, room);
         } else if (distance == 1 && isDiagonalFrom(entity)) { //if enemy is next to hero, attack
             entity.receiveDamage(getDamage()); //TO DO: fix thief not attacking
-            System.out.println("(distance == 1 && isDiagonalFrom(entity)) = " + (distance == 1 && isDiagonalFrom(entity)));
         }
-        System.out.println("-\nHero health = " + entity.getHealth());
     }
     public boolean isDiagonalFrom(Entity entity){
         Position heroPosition = entity.getPosition();
@@ -66,29 +63,20 @@ public class Thief extends Enemy implements ImageTile {
         int randomCoordinate = new Random().nextInt(2);
         int randomDirection = new Random().nextInt(2);
         Position nextPosition;
-        //System.out.println("Hero x = " + entity.getPosition().getX());
-        //System.out.println("Enemy x = " + getPosition().getX());
-        //System.out.println("xDifference = " + xDifference);
-//        System.out.println("yDifference = " + yDifference);
-//        System.out.println("randomCoordinate = " + randomCoordinate);
-//        System.out.println("randomDirection = " + randomDirection);
         switch (randomCoordinate){
             case 0:
-                //System.out.println("Following x coordinate");
                 if (xDifference > 0){   //if thief wants to move to the left, he can either move upleft or downleft
                     switch (randomDirection) {
                         case 0:
                             nextPosition = super.getPosition().plus(Direction.UPLEFT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving upleft");
                             }
                             break;
                         default:
                             nextPosition = super.getPosition().plus(Direction.DOWNLEFT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving downleft");
                             }
                             break;
                     }
@@ -99,35 +87,30 @@ public class Thief extends Enemy implements ImageTile {
                             nextPosition = super.getPosition().plus(Direction.UPRIGHT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving upright");
                             }
                             break;
                         default:
                             nextPosition = super.getPosition().plus(Direction.DOWNRIGHT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving downright");
                             }
                             break;
                     }
                 }
                 break;
             default:
-                //System.out.println("Following y coordinate");
                 if (yDifference > 0){   //if thief wants to move up, he can either move upleft or upright
                     switch (randomDirection) {
                         case 0:
                             nextPosition = super.getPosition().plus(Direction.UPLEFT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                System.out.println("Moving upleft");
                             }
                             break;
                         default:
                             nextPosition = super.getPosition().plus(Direction.UPRIGHT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving upright");
                             }
                             break;
                     }
@@ -138,21 +121,18 @@ public class Thief extends Enemy implements ImageTile {
                             nextPosition = super.getPosition().plus(Direction.UPRIGHT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving upright");
                             }
                             break;
                         default:
                             nextPosition = super.getPosition().plus(Direction.DOWNRIGHT.asVector());
                             if (!room.findsCollision(nextPosition)) {
                                 setPosition(nextPosition);
-                                //System.out.println("Moving downright");
                             }
                             break;
                     }
                 }
                 break;
         }
-        System.out.println("-------");
     }
     private Direction toDirection(int num){ //converts int into one of the four directions
 

@@ -19,13 +19,7 @@ import java.util.HashMap;
 public class StatusBar {
     ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private ArrayList<ImageTile> statusList = new ArrayList<>();
-    public StatusBar() {
-
-
-
-        //update();
-    }
-
+    public StatusBar() {}
     public ArrayList<ImageTile> getStatusList() {
         return statusList;
     }
@@ -40,7 +34,6 @@ public class StatusBar {
 //        }
     }
     public void getHealth(int health){
-        //int healthDifference = 100 - health;
         for (int i = 3; i <= 6; i++){
             statusList.add(new Green(new Position(i, 0))); //set life bar to green
         }
@@ -84,22 +77,6 @@ public class StatusBar {
             }
             key++;
         }
-//        int j = 0;
-//        if (!inventory.isEmpty()) {
-//            for (int i = 7; i < 10; i++) {
-//                Item copyOfItem = inventory.get(j);
-//                copyOfItem.setPosition(new Position(i, 0));
-//                statusList.add((ImageTile) copyOfItem);
-//            }
-//        }
-//        int i = 7;
-//        int j = 0;
-//        for (Item item : inventory){ //to do: bugged!
-//            Item copyOfItem = inventory.get(j);
-//            copyOfItem.setPosition(new Position(i, 0));
-//            statusList.add((ImageTile) copyOfItem);
-//            i++;
-//        }
     }
     public void update(int health, int numberOfFireballs, HashMap<Integer, Item> inventory){
         ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
