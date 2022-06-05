@@ -13,8 +13,6 @@ import java.util.ArrayList;
 public class Engine {
     private ImageMatrixGUI gui = ImageMatrixGUI.getInstance();
     private Map map = new Map(gui);
-    //private Room room;
-    //private ArrayList<ImageTile> mapTiles;
 
     public void init(){
         gui.setEngine(this);
@@ -22,8 +20,6 @@ public class Engine {
         map.runRoomEngine(startingRoom);
         gui.go();
         gui.setStatus("The game has started!");
-
-
         while (true){
             gui.update();
         }
@@ -38,5 +34,4 @@ public class Engine {
         Engine engine = new Engine();
         engine.init();
     }
-
 }

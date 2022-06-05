@@ -22,11 +22,11 @@ public class Floor implements ImageTile {
             case 1:
             case 2:
             case 3:
-                return "Grass";
+                return "Grass"; // == 8% chance
             case 4:
-                return "Trap";
+                return "Trap";  // == 2% chance
             default:
-                return "Floor";
+                return "Floor"; // == 90% chance
         }
     }
 

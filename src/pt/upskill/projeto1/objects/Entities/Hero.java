@@ -116,7 +116,7 @@ public class Hero extends Entity implements ImageTile {
                         if (hasWeapon)
                             totalDamage += weapon.getDamage();
                         ((Enemy) enemy).receiveDamage(totalDamage);
-                        break; //break the cycle when corresponding enemy was found, no need to keep cycling afterwards
+                        break; //break the cycle when corresponding enemy is found, no need to keep cycling afterwards
                     }
                 }
             }
@@ -127,7 +127,7 @@ public class Hero extends Entity implements ImageTile {
                             door.setRequiresKey(false);
                             door.setType("D");
                             door.setOpen(true); //"D" and "true" are required for Door to [getName() = "DoorOpen"]
-                            gui.setStatus("You have successfuly opened the door!");
+                            gui.setStatus("You have successfully opened the door!");
                             break;
                         } else if (door.requiresKey() && !heroHasKey(door)) {
                             gui.setStatus("You do not have the right key to open this door!");
