@@ -1,5 +1,6 @@
 package pt.upskill.projeto1.objects.Entities;
 
+import javafx.geometry.Pos;
 import pt.upskill.projeto1.gui.ImageTile;
 import pt.upskill.projeto1.rogue.utils.Direction;
 import pt.upskill.projeto1.rogue.utils.Room;
@@ -30,7 +31,7 @@ public class Thief extends Enemy implements ImageTile {
     }
 
     @Override
-    public void move(Room room, Entity entity) {
+    public void init(Room room, Entity entity) {
         int distance = calculateDistance(entity);
         System.out.println("Distance = " + distance);
         if (distance > 4) {             //if hero is distant, move randomly
@@ -43,20 +44,19 @@ public class Thief extends Enemy implements ImageTile {
             moveToDirectionOf(entity, room);
         } else if (distance == 1 && isDiagonalFrom(entity)) { //if enemy is next to hero, attack
             entity.receiveDamage(getDamage()); //TO DO: fix thief not attacking
-            gui.setStatus("Hero health = " + entity.getHealth());
-            System.out.println("Hero is diagonal from enemy");
+            System.out.println("(distance == 1 && isDiagonalFrom(entity)) = " + (distance == 1 && isDiagonalFrom(entity)));
         }
+        System.out.println("-\nHero health = " + entity.getHealth());
     }
     public boolean isDiagonalFrom(Entity entity){
-        System.out.println("Checking if diagonal");
-        System.out.println("Hero at " + entity.getPosition());
-        System.out.println("getPosition().plus(toDirection(0).asVector() = " + getPosition().plus(toDirection(0).asVector()));
-        if (entity.getPosition() == getPosition().plus(toDirection(0).asVector())/* ||
-                entity.getPosition() == getPosition().plus(toDirection(1).asVector()) ||
-                entity.getPosition() == getPosition().plus(toDirection(2).asVector()) ||
-                entity.getPosition() == getPosition().plus(toDirection(3).asVector())*/){
+        Position heroPosition = entity.getPosition();
+        Position thiefDiagonal0 = getPosition().plus(toDirection(0).asVector());
+        Position thiefDiagonal1 = getPosition().plus(toDirection(1).asVector());
+        Position thiefDiagonal2 = getPosition().plus(toDirection(2).asVector());
+        Position thiefDiagonal3 = getPosition().plus(toDirection(3).asVector());
+        if (heroPosition.equals(thiefDiagonal0) || heroPosition.equals(thiefDiagonal1) ||
+                heroPosition.equals(thiefDiagonal2) || heroPosition.equals(thiefDiagonal3))
             return true;
-        }
         return false;
     }
     private void moveToDirectionOf(Entity entity, Room room){

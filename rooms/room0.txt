@@ -6,7 +6,7 @@
 # k key2
 #
 WWWW0WWWWW
-W    s   W
+W    T   W
 W        W
 W        W
 W        W

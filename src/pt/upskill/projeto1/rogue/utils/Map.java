@@ -65,8 +65,9 @@ public class Map {
         if (!hero.isDead()) {
             hero.init(keyPressed, this);
             for (Enemy enemy : getCurrentRoom().getEnemyList()) {
-                enemy.move(getCurrentRoom(), hero);
+                enemy.init(getCurrentRoom(), hero);
             }
+            hero.getStatusBar().update(hero.getHealth(), hero.getNumberOfFireballs(), hero.getInventory());
         }
     }
 }

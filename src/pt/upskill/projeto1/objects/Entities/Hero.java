@@ -178,7 +178,7 @@ public class Hero extends Entity implements ImageTile {
                 }
             }
         }
-        statusBar.update(getHealth(), getNumberOfFireballs(), getInventory());
+        //statusBar.update(getHealth(), getNumberOfFireballs(), getInventory());
 
     }
     private boolean isOutOfBounds(Position position){ //checks if hero is out of visual tiles

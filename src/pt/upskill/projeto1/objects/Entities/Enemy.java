@@ -27,7 +27,7 @@ public abstract class Enemy extends Entity implements ImageTile {
         super(position);
     }
 
-    public void move(Room room, Entity entity) {
+    public void init(Room room, Entity entity) {
         int distance = calculateDistance(entity);
         if (distance > 4) {             //if hero is distant, move randomly
             Direction direction = toDirection(new Random().nextInt(4));
